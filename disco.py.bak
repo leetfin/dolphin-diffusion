@@ -2603,23 +2603,20 @@ args = {
 args = SimpleNamespace(**args)
 
 print('Prepping model...')
-with torch.no_grad():
-    model, diffusion = create_model_and_diffusion(**model_config)
-    model.load_state_dict(torch.load(f'{model_path}/{diffusion_model}.pt', map_location='cpu'))
-    model.requires_grad_(False).eval().to(device)
-    for name, param in model.named_parameters():
-        if 'qkv' in name or 'norm' in name or 'proj' in name:
-            param.requires_grad_()
-    if model_config['use_fp16']:
-        model.convert_to_fp16()
+model, diffusion = create_model_and_diffusion(**model_config)
+model.load_state_dict(torch.load(f'{model_path}/{diffusion_model}.pt', map_location='cpu'))
+model.requires_grad_(False).eval().to(device)
+for name, param in model.named_parameters():
+    if 'qkv' in name or 'norm' in name or 'proj' in name:
+        param.requires_grad_()
+if model_config['use_fp16']:
+    model.convert_to_fp16()
 
 gc.collect()
 torch.cuda.empty_cache()
 try:
-    with torch.no_grad():
-      do_run()
+    do_run()
 except KeyboardInterrupt:
-    print("KeyboardInterrupt, passing")
     pass
 finally:
     print('Seed used:', seed)
