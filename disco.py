@@ -343,7 +343,7 @@ Setting | Description | Default
 # !! }}
 #@title 1.1 Check GPU Status
 import subprocess
-simple_nvidia_smi_display = False#@param {type:"boolean"}
+simple_nvidia_smi_display = True #@param {type:"boolean"}
 if simple_nvidia_smi_display:
     #!nvidia-smi
     nvidiasmi_output = subprocess.run(['nvidia-smi', '-L'], stdout=subprocess.PIPE).stdout.decode('utf-8')
@@ -362,22 +362,6 @@ else:
 # !! }}
 #@title 1.2 Prepare Folders
 import subprocess, os, sys, ipykernel
-
-def gitclone(url):
-    res = subprocess.run(['git', 'clone', url], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(res)
-
-def pipi(modulestr):
-    res = subprocess.run(['pip', 'install', modulestr], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(res)
-
-def pipie(modulestr):
-    res = subprocess.run(['git', 'install', '-e', modulestr], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(res)
-
-def wget(url, outputdir):
-    res = subprocess.run(['wget', url, '-P', f'{outputdir}'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    print(res)
 
 try:
     from google.colab import drive
@@ -430,19 +414,66 @@ else:
 # !!   "cellView": "form",
 # !!   "id": "InstallDeps"
 # !! }}
-#@title ### 1.3 Install, import dependencies and set up runtime devices
+#@title ### 1.2.5 Define functions for setting up dependencies
 
-import pathlib, shutil, os, sys
+import subprocess, os, sys, ipykernel
+
+# Recheck colab because shit
+try:
+    from google.colab import drive
+    is_colab = True
+except:
+    is_colab = False
+
+def gitclone(url):
+    res = subprocess.run(['git', 'clone', url], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(res)
+
+def pipi(modulestr):
+    res = subprocess.run(['pip', 'install', modulestr], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(res)
+
+def pipie(modulestr):
+    res = subprocess.run(['git', 'install', '-e', modulestr], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(res)
+
+def wget(url, outputdir):
+    res = subprocess.run(['wget', url, '-P', f'{outputdir}'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(res)
+
+multipip_res = subprocess.run(['pip', 'install', '-q', 'lpips', 'datetime', 'timm', 'ftfy', 'einops', 'pytorch-lightning', 'omegaconf'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+print(multipip_res)
+
+if is_colab:
+    subprocess.run(['apt', 'install', 'imagemagick'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+
+# Leet's extra setup crap to try and generate 1080p on Colab
+#!pip uninstall -q -y torch torchvision torchaudio torchtext
+#!pip install -q torch==1.9.0 torchvision==0.10.0 #torchaudio==0.9.0 torchtext==0.10.0 
+#!pip uninstall -q -y transformers
+#!pip install -q transformers==4.8.0
+
+
+# %%
+# !! {"metadata":{
+# !!   "cellView": "form",
+# !!   "id": "InstallDeps"
+# !! }}
+#@title ### 1.3 Import dependencies and set up runtime devices
+
+import pathlib, shutil, os, sys, subprocess
 
 # There are some reports that with a T4 or V100 on Colab, downgrading to a previous version of PyTorch may be necessary.
 # .. but there are also reports that downgrading breaks them!  If you're facing issues, you may want to try uncommenting and running this code.
-# nvidiasmi_output = subprocess.run(['nvidia-smi'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-# cards_requiring_downgrade = ["Tesla T4", "V100"]
-# if is_colab:
-#     if any(cardstr in nvidiasmi_output for cardstr in cards_requiring_downgrade):
-#         print("Downgrading pytorch. This can take a couple minutes ...")
-#         downgrade_pytorch_result = subprocess.run(['pip', 'install', 'torch==1.10.2', 'torchvision==0.11.3', '-q'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-#         print("pytorch downgraded.")
+downgrade_pytorch = False #@param {type:"boolean"}
+if downgrade_pytorch:
+    nvidiasmi_output = subprocess.run(['nvidia-smi'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    cards_requiring_downgrade = ["Tesla T4", "V100"]
+    if is_colab:
+        if any(cardstr in nvidiasmi_output for cardstr in cards_requiring_downgrade):
+            print("Downgrading pytorch. This can take a couple minutes ...")
+            downgrade_pytorch_result = subprocess.run(['pip', 'install', 'torch==1.10.2', 'torchvision==0.11.3', '-q'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+            print("pytorch downgraded.")
 
 #@markdown Check this if you want to use CPU
 useCPU = False #@param {type:"boolean"}
@@ -461,12 +492,6 @@ if is_colab:
 else:
     root_path = os.getcwd()
     model_path = f'{root_path}/models'
-
-multipip_res = subprocess.run(['pip', 'install', 'lpips', 'datetime', 'timm', 'ftfy', 'einops', 'pytorch-lightning', 'omegaconf'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-print(multipip_res)
-
-if is_colab:
-    subprocess.run(['apt', 'install', 'imagemagick'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
 try:
     from CLIP import clip
