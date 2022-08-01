@@ -1,6 +1,6 @@
-# Disco Diffusion
+# Dolphin Diffusion
 
-<a href="https://colab.research.google.com/github/alembics/disco-diffusion/blob/main/Disco_Diffusion.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"/></a>
+<a href="https://colab.research.google.com/github/leetfin/dolphin-diffusion/blob/main/Disco_Diffusion.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab"/></a>
 
 A frankensteinian amalgamation of notebooks, models and techniques for the generation of AI Art and Animations.
 
