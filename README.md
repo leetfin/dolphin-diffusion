@@ -35,12 +35,12 @@ the tool being used is called [Colab-Convert](https://github.com/MSFTserver/cola
 * Fixed issue with NaNs resulting in black images, with massive help and testing from @Softology
 * Perlin now changes properly within batches (not sure where this perlin_regen code came from originally, but thank you)
 
-#### v4 Update: Jan 2021 - Somnai
+#### v4 Update: Jan 2022 - Somnai
 * Implemented Diffusion Zooming
 * Added Chigozie keyframing
 * Made a bunch of edits to processes
 
-#### v4.1 Update: Jan 14th 2021 - Somnai
+#### v4.1 Update: Jan 14th 2022 - Somnai
 * Added video input mode
 * Added license that somehow went missing
 * Added improved prompt keyframing, fixed image_prompts and multiple prompts
@@ -77,13 +77,33 @@ the tool being used is called [Colab-Convert](https://github.com/MSFTserver/cola
 
 * VR Mode
 
-## Notebook Provenance 
+#### v5.3 Update: Jun 10th 2022 - nshepperd, huemin, cut_pow
+
+* Horizontal and Vertical symmetry
+* Addition of ViT-L/14@336px model (requires high VRAM)
+
+#### v5.4 Update: Jun 14th 2022 - devdef / Alex Spirin, integrated into DD main by gandamu / Adam Letts
+
+* Warp mode - for smooth/continuous video input results leveraging optical flow estimation and frame blending
+* Custom models support
+
+#### v5.5 Update: Jul 11th 2022 - Palmweaver / Chris Scalf, KaliYuga_ai, further integration by gandamu / Adam Letts
+
+* OpenCLIP models integration
+* Pixel Art Diffusion, Watercolor Diffusion, and Pulp SciFi Diffusion models
+* cut_ic_pow scheduling
+
+#### v5.6 Update: Jul 13th 2022 - Felipe3DArtist, integration by gandamu / Adam Letts
+
+* Integrated portrait_generator_v001 - 512x512 diffusion model trained on faces - from Felipe3DArtist
+
+## Notebook Provenance
 
 Original notebook by Katherine Crowson (https://github.com/crowsonkb, https://twitter.com/RiversHaveWings). It uses either OpenAI's 256x256 unconditional ImageNet or Katherine Crowson's fine-tuned 512x512 diffusion model (https://github.com/openai/guided-diffusion), together with CLIP (https://github.com/openai/CLIP) to connect text prompts with images.
 
 Modified by Daniel Russell (https://github.com/russelldc, https://twitter.com/danielrussruss) to include (hopefully) optimal params for quick generations in 15-100 timesteps rather than 1000, as well as more robust augmentations.
 
-Further improvements from Dango233 and nsheppard helped improve the quality of diffusion in general, and especially so for shorter runs like this notebook aims to achieve.
+Further improvements from Dango233 and nshepperd helped improve the quality of diffusion in general, and especially so for shorter runs like this notebook aims to achieve.
 
 Vark added code to load in multiple Clip models at once, which all prompts are evaluated against, which may greatly improve accuracy.
 
@@ -96,3 +116,19 @@ Advanced DangoCutn Cutout method is also from Dango223.
 Somnai (https://twitter.com/Somnai_dreams) added 2D Diffusion animation techniques, QoL improvements and various implementations of tech and techniques, mostly listed in the changelog below.
 
 3D animation implementation added by Adam Letts (https://twitter.com/gandamu_ml) in collaboration with Somnai.
+
+Turbo feature by Chris Allen (https://twitter.com/zippy731)
+
+Improvements to ability to run on local systems, Windows support, and dependency installation by HostsServer (https://twitter.com/HostsServer)
+
+VR Mode by Tom Mason (https://twitter.com/nin_artificial)
+
+Horizontal and Vertical symmetry functionality by nshepperd. Symmetry transformation_steps by huemin (https://twitter.com/huemin_art). Symmetry integration into Disco Diffusion by Dmitrii Tochilkin (https://twitter.com/cut_pow).
+
+Warp and custom model support by Alex Spirin (https://twitter.com/devdef).
+
+Pixel Art Diffusion, Watercolor Diffusion, and Pulp SciFi Diffusion models from KaliYuga (https://twitter.com/KaliYuga_ai). Follow KaliYuga's Twitter for the latest models and for notebooks with specialized settings.
+
+Integration of OpenCLIP models and initiation of integration of KaliYuga models by Palmweaver / Chris Scalf (https://twitter.com/ChrisScalf11)
+
+Integrated portrait_generator_v001 from Felipe3DArtist (https://twitter.com/Felipe3DArtist)
